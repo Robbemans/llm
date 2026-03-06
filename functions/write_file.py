@@ -1,4 +1,5 @@
 import os
+from google.genai import types
 
 def write_file(working_directory, file_path, content):
     abs_working_directory = os.path.abspath(working_directory)
@@ -18,3 +19,22 @@ def write_file(working_directory, file_path, content):
             return f'Successfully wrote to "{file_path}" ({len(content)} characters written)'
     except Exception as e:
         raise Exception(f"Error: {e}")
+
+schema_write_file = types.FunctionDeclaration(
+    name="write_file",
+    description="Lists the content of a file, as wel as the amount of characters, to a maximum of 10000 characters.",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description="path to the file to read, relative to working dir",),
+            "content": types.Schema(
+                type=types.Type.STRING,
+                description="content to be written to a file",
+
+            )   
+        },
+        required=["file_path", "content"]
+    ),
+)
